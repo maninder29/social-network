@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-md-3">
+		<img src="{% static 'img/a.jpg' %}" class="img-responsive">
+		<h1>{{user.get_full_name.capitalize}}</h1>
+		<p class="lead">{{user.username}}</p>
+	</div>
+	<div class="col-md-6">
+		<h2>Friends</h2>
+		{% for f in friends %}
+			{{f}}<br>
+		{% endfor %}
+		<h2>Following</h2>
+		{% for f in following %}
+			{{f}}<br>
+		{% endfor %}
+		<h2>Unread friend requests</h2>
+		{% for f in unread_friend_requests %}
+			<div class="row">
+				<div class="col-md-6">
+					{{f.from_user}}
+				</div>
+				<div class="col-md-3">
+	        		<form action="{% url 'friendship_accept' friendship_request_id=f.id %}" method="POST">{% csrf_token %}
+					    <input type="submit" value="Accept" class="btn btn-primary">
+					</form>					
+				</div>
+				<div class="col-md-3">
+					<form action="{% url 'friendship_reject' friendship_request_id=f.id %}" method="POST">{% csrf_token %}
+					    <input type="submit" value="Reject" class="btn btn-default">
+					</form>
+				</div>
+			</div>
+			<br>
+		{% endfor %}
+	</div>
+	<div class="col-md-3">
+	{% for f in sent_friend_requests %}
+		{{f}}
+	{% endfor %}
+	</div>
+</div>
+
+{% endblock %}

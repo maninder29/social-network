@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+	<div id="main">
+		<article class="post">
+			<header>
+				<div class="title">
+					<h2>{{ instance.title }}</h2>
+					<!-- <p>Lorem ipsum dolor amet nullam consequat etiam feugiat</p> -->
+				</div>
+				<div class="meta">
+					<time class="published">{{ instance.timestamp}}</time>
+					<a href="{% url 'user_detail' u=instance.user.username %}" class="author"><span class="name">{{ instance.user }}</span><img src="{% static 'images/avatar.jpg' %}" alt="" /></a>
+				</div>
+			</header>
+			<span class="image featured"><img src="{{ instance.media.url }}" alt="" /></span>
+			<p>{{ instance.content|linebreaks }}</p>
+			<footer>
+				<ul class="actions">
+					<li><a href="{% url 'posts:update' id=instance.id %}" class="button big">Edit</a></li>
+					<li><a href="{% url 'posts:delete' id=instance.id %}" class="button big">Delete</a></li>
+				</ul>
+				<ul class="stats">
+					<li><a href="#" class="icon fa-heart">28</a></li>
+					<li><a href="#" class="icon fa-comment comment-button">{{ comments.count }}</a></li>
+					<li><a href="#">Share</a></li>
+				</ul>
+			</footer>
+			<!-- Comments -->
+			<div class="comments" style="display:none">
+				<h2>Comments</h2><hr>
+				<form method="POST" action="">{% csrf_token %}
+					{{form|crispy}}
+					<input type="submit" >
+				</form><br>
+				{% for comment in comments %}
+					<blockquote>
+						<p>{{comment.content}}</p>
+						<footer>via {{comment.user}} 
+						<cite title="Source Title">{{comment.timestamp|timesince}} ago | {{comment.children.count}} comments | </cite>
+						<a href="#" class="reply-btn">Reply</a>
+						</footer>
+						<div class="comment-reply" style="display:none">
+							{% for child in comment.children %}
+								<blockquote>
+									<p>{{child.content}}</p>
+									<footer>via {{child.user}} <cite title="Source Title">{{child.timestamp|timesince}} ago</cite></footer>
+								</blockquote>
+							{% endfor %}
+							<form method="POST" action="">{% csrf_token %}
+								{{form|crispy}}
+								<input type="hidden" name="parent_id" value="{{ comment.id }}">
+								<input type="submit" value="Reply" class="btn btn-default">
+							</form><br>
+						</div>
+					</blockquote>
+				{% endfor %}
+			</div>
+		</article>
+		<!-- Footer -->
+		<section id="footer">
+			<ul class="icons">
+				<li><a href="#" class="fa-twitter"><span class="label">Twitter</span></a></li>
+				<li><a href="#" class="fa-facebook"><span class="label">Facebook</span></a></li>
+				<li><a href="#" class="fa-instagram"><span class="label">Instagram</span></a></li>
+				<li><a href="#" class="fa-rss"><span class="label">RSS</span></a></li>
+				<li><a href="#" class="fa-envelope"><span class="label">Email</span></a></li>
+			</ul>
+			<p class="copyright">&copy; Untitled. Design: <a href="http://html5up.net">HTML5 UP</a>. Images: <a href="http://unsplash.com">Unsplash</a>.</p>
+		</section>
+	</div>
+
+{% endblock %}
+				
