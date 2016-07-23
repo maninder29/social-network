@@ -6,11 +6,9 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = [
-        "title",
-        "content",
-        "media"
-    ]
-
+            "content",
+            "media"
+        ]
     def clean_media(self):
         media=self.cleaned_data.get("media")
         if media:
@@ -19,3 +17,5 @@ class PostForm(forms.ModelForm):
                 raise forms.ValidationError("Only mp4 and WebM video formats are supported :(")
             return media
 
+class CommentForm(forms.Form):
+    content=forms.CharField(label='', widget=forms.Textarea(attrs={'rows':2}))

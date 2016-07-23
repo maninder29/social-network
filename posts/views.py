@@ -1,15 +1,12 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404,redirect
 from django.contrib.auth.decorators import login_required
-from .forms import PostForm
-from .models import Post
 from friendship.models import Friend, Follow
 from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from comments.models import Comment
 from django.contrib.contenttypes.models import ContentType
-from comments.forms import CommentForm
-
+from .forms import PostForm,CommentForm
+from .models import Post,Comment,Like
 
 @login_required
 def post_create(request):
@@ -50,9 +47,8 @@ def post_detail(request, id=None):
 		c.save()
 		return redirect(instance)
 	context = {
-		"title": instance.title,
 		"instance": instance,
-		"img_list": ["jpg","JPG","jpeg","JPEG","png","PNG"],
+		"img_list": ["jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"],
 		"vid_list": ["MP4","mp4","WebM","webm","WEBM"],
 		"comments":comments,
 		"form":form,
@@ -77,7 +73,7 @@ def post_list(request):
 		queryset = paginator.page(paginator.num_pages)
 	context = {
 		"object_list": queryset, 
-		"img_list": ["jpg","JPG","jpeg","JPEG","png","PNG"],
+		"img_list": ["jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"],
 		"vid_list": ["MP4","mp4","3GP","3gp","AVI","avi","MKV","mkv"],
 	}
 	return render(request, "base.html", context)
@@ -92,7 +88,6 @@ def post_update(request, id=None):
 		return redirect(instance)
 
 	context = {
-		"title": instance.title,
 		"instance": instance,
 		"form":form,
 		"value":"Save",
@@ -105,3 +100,37 @@ def post_delete(request,id):
 	instance.delete()
 	return redirect("posts:list")
 
+
+def post_like(request, id):
+	if request.is_ajax():
+		post=Post.objects.get(id=id)
+		user=request.user
+		if post.liked_by_user(user):
+			l=get_object_or_404(Like, user=user, post=post)
+			l.delete()
+			post.like_count-=1
+			post.save()
+			like_count=post.like_count
+			data={"like_count":like_count, "like_status":'not liked'}
+			return JsonResponse(data)
+		l=Like(user=user, post=post)
+		l.save()
+		post.like_count+=1
+		post.save()
+		like_count=post.like_count
+		data={"like_count":like_count, "like_status":'liked'}
+		return JsonResponse(data)
+	else:
+		post=Post.objects.get(id=id)
+		user=request.user
+		if post.liked_by_user(user):
+			l=get_object_or_404(Like, user=user, post=post)
+			l.delete()
+			post.like_count-=1
+			post.save()
+			return redirect("posts:list")
+		l=Like(user=user, post=post)
+		l.save()
+		post.like_count+=1
+		post.save()
+		return redirect("posts:list")
