@@ -310,20 +310,19 @@ class FriendshipManager(models.Manager):
                 Q(to_user=from_user, from_user=to_user)
             ).distinct().all()
 
-            if qs:
-                friendship_removed.send(
-                    sender=qs[0],
-                    from_user=from_user,
-                    to_user=to_user
-                )
-                qs.delete()
-                bust_cache('friends', to_user.pk)
-                bust_cache('friends', from_user.pk)
-                return True
-            else:
-                return False
-        except Friend.DoesNotExist:
-            return False
+            friendship_removed.send(
+                sender=qs[0],
+                from_user=from_user,
+                to_user=to_user
+            )
+            qs.delete()
+            bust_cache('friends', to_user.pk)
+            bust_cache('friends', from_user.pk)
+            print "!!! success !!!"
+
+        except Exception as e:
+            e=str(e)
+            raise RuntimeError(e)
 
     def are_friends(self, user1, user2):
         """ Are these two users friends? """

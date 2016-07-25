@@ -33,7 +33,6 @@ class Post(models.Model):
         return extension[1:]
 
     def liked_by_user(self, user):
-        print user
         if Like.objects.filter(post=self, user=user).exists():
             return True
         return False

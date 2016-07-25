@@ -8,6 +8,7 @@ from .views import (
 	post_update,
 	post_delete,
 	post_like,
+	# user_detail,
 	)
 
 urlpatterns = [

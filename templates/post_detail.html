@@ -17,10 +17,10 @@
 		<br><div class="row">
 			{% if instance.user == request.user %}
 			<div class="col-xs-3">
-				<a href="{% url 'posts:update' id=instance.id %}"><input type="button" class="btn btn-default"  value="Edit"></a>
+				<a href="{% url 'posts:update' id=instance.id %}">Edit</a>
 			</div>
 			<div class="col-xs-3">
-				<a href="{% url 'posts:delete' id=instance.id %}"><input type="button" class="btn btn-default"  value="Delete"></a>
+				<a href="{% url 'posts:delete' id=instance.id %}" class="post-delete-btn">Delete</a>
 			</div>
 			{% endif %}
 			<div class="col-xs-3">

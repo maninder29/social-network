@@ -1,8 +1,8 @@
 from django.conf.urls import url
 from friendship.views import view_friends, friendship_add_friend, friendship_accept, \
-    friendship_reject, friendship_cancel, friendship_request_list, \
-    friendship_request_list_rejected, friendship_requests_detail, followers,\
-    following, follower_add, follower_remove, all_users
+    friendship_reject, friendship_cancel, friendship_remove, friendship_request_list, \
+    friendship_request_list_rejected, followers,\
+    following, follower_add, follower_remove, followee_remove, all_users
 
 urlpatterns = [
     url(
@@ -36,6 +36,11 @@ urlpatterns = [
         name='friendship_cancel',
     ),
     url(
+        regex=r'^friend/remove/(?P<username>[\w-]+)/$',
+        view=friendship_remove,
+        name='friendship_remove',
+    ),
+    url(
         regex=r'^friend/requests/$',
         view=friendship_request_list,
         name='friendship_request_list',
@@ -44,11 +49,6 @@ urlpatterns = [
         regex=r'^friend/requests/rejected/$',
         view=friendship_request_list_rejected,
         name='friendship_requests_rejected',
-    ),
-    url(
-        regex=r'^friend/request/(?P<friendship_request_id>\d+)/$',
-        view=friendship_requests_detail,
-        name='friendship_requests_detail',
     ),
     url(
         regex=r'^followers/(?P<username>[\w-]+)/$',
@@ -67,6 +67,11 @@ urlpatterns = [
     ),
     url(
         regex=r'^follower/remove/(?P<followee_username>[\w-]+)/$',
+        view=followee_remove,
+        name='followee_remove',
+    ),
+    url(
+        regex=r'^followee/remove/(?P<follower_username>[\w-]+)/$',
         view=follower_remove,
         name='follower_remove',
     ),

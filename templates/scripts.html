@@ -1,0 +1,86 @@
+{% load staticfiles %}
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script>window.jQuery || document.write('<script src="{% static 'js/jquery.min.js' %}"><\/script>')</script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script type="text/javascript">
+  $(".reply-btn").click(function(event){
+    event.preventDefault();
+    $(this).parent().next(".comment-reply").fadeToggle();
+  })
+
+  $(".like-btn").click(function(event){
+    event.preventDefault();
+    var self = $(this);
+    data={}
+    $.ajax({
+      url:self.attr("href"),
+      type:'get',
+      data:data,
+      success: function(data){
+        var span = self.children("span")
+        span.text(data.like_count)
+        self.next('p').text(data.like_status)
+      },
+      failure: function(response, error){
+       self.click();
+      }
+    })
+  })
+
+  $(".add-friend-btn").click(function(evnet){
+    event.preventDefault();
+    ctx={}
+    $.ajax({
+      url:$(".add-friend-btn").parent().attr("action"),
+      type:'get',
+      data:ctx,
+      success: function(data){
+        if (data.error) {
+          $(".alert-danger").css("display", "inherit");
+          $(".alert-danger").children('span').text('You are already friend of '+ data.to_username)
+        } else{
+          $(".alert-success").css("display", "inherit");
+          $(".alert-success").children('span').text('Friend request sent successfully :)')
+        }
+      },
+      failure: function(error){
+        console.log(error)
+        $(".add-friend-btn").click()
+      }
+    })
+  })
+
+  $(".follow-btn").click(function(evnet){
+    event.preventDefault();
+    ctx={}
+    $.ajax({
+      url:$(".follow-btn").parent().attr("action"),
+      type:'get',
+      data:ctx,
+      success: function(data){
+        if (data.error) {
+          $(".alert-danger").css("display", "inherit");
+          $(".alert-danger").children('span').text('You have already started following '+ data.followee_username)
+        } else if (data.are_friends) {
+          $(".alert-danger").css("display", "inherit");
+          $(".alert-danger").children('span').text('You both are already friends')
+        }else {
+          $(".alert-success").css("display", "inherit");
+          $(".alert-success").children('span').text('You have successfully started following '+ data.followee_username)
+        }
+      },
+      failure: function(error){
+        console.log(error)
+        $(".follow-btn").click()
+      }
+    })
+  })
+
+  $(".post-delete-btn").click(function(event){
+    event.preventDefault();
+    if (confirm("Are you sure?")) {
+      window.location=$(".post-delete-btn").attr("href")
+    }
+  })
+</script>

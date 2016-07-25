@@ -1,10 +1,11 @@
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404,redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from friendship.models import Friend, Follow
-from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
 from .forms import PostForm,CommentForm
 from .models import Post,Comment,Like
 
@@ -100,7 +101,7 @@ def post_delete(request,id):
 	instance.delete()
 	return redirect("posts:list")
 
-
+@login_required
 def post_like(request, id):
 	if request.is_ajax():
 		post=Post.objects.get(id=id)
@@ -134,3 +135,29 @@ def post_like(request, id):
 		post.like_count+=1
 		post.save()
 		return redirect("posts:list")
+
+
+# def user_detail(request,u):
+# 	user=User.objects.get(username=u)
+# 	friends=Friend.objects.friends(user)
+# 	unread_friend_requests=Friend.objects.unread_requests(user=user)
+# 	unrejected_friend_requests=Friend.objects.unrejected_requests(user=user)
+# 	rejected_friend_requests=Friend.objects.rejected_requests(user=user)
+# 	sent_friend_requests=Friend.objects.sent_requests(user=user)
+# 	followers=Follow.objects.followers(user)
+# 	following=Follow.objects.following(user)
+# 	posts=Post.objects.filter(user=user)
+# 	context={
+# 		"current_user":user,
+# 		"friends":friends,
+# 		"unread_friend_requests":unread_friend_requests,
+# 		"unrejected_friend_requests":unrejected_friend_requests,
+# 		"rejected_friend_requests":rejected_friend_requests,
+# 		"sent_friend_requests":sent_friend_requests,
+# 		"followers":followers,
+# 		"following":following,
+# 		"posts":posts,
+# 		"img_list": ["jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"],
+# 		"vid_list": ["MP4","mp4","WebM","webm","WEBM"],
+# 	}
+# 	return render(request,"user_detail.html", context)

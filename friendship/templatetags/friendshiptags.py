@@ -6,15 +6,16 @@ register = template.Library()
 
 
 @register.inclusion_tag('friendship/templatetags/friends.html')
-def friends(user):
+def get_friends(user):
     """
     Simple tag to grab all friends
     """
+    print user
     return {'friends': Friend.objects.friends(user)}
 
 
 @register.inclusion_tag('friendship/templatetags/followers.html')
-def followers(user):
+def get_followers(user):
     """
     Simple tag to grab all followers
     """
@@ -22,7 +23,7 @@ def followers(user):
 
 
 @register.inclusion_tag('friendship/templatetags/following.html')
-def following(user):
+def get_following(user):
     """
     Simple tag to grab all users who follow the given user
     """

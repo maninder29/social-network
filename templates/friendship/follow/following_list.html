@@ -1,5 +1,6 @@
+{% extends 'base.html' %}
+{% load friendshiptags %}
 {% block content %} 
-{% load friendshiptags %} 
 <h1>Following</h1> 
-{% following user %}
-{% endblock content %}
+{% get_following user %}
+{% endblock %}
