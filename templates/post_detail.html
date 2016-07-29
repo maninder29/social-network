@@ -1,68 +1,122 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load post_tags %}
 {% load crispy_forms_tags %}
 
 {% block content %}
+<div class="mdl-grid">
+	<div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--3-offset-desktop 
+		mdl-cell--6-col-tablet mdl-cell--1-offset-tablet mdl-cell--4-col-phone">
+		<div class="card-wide mdl-card mdl-shadow--8dp">
+			<div class="mdl-card__title">
+				<h2 class="mdl-card__title-text"><a href="{% url 'user_detail' u=instance.user.username %}">
+				{{instance.user.get_full_name}}</a><small>{{ instance.timestamp|timesince }} ago</small></h2>
+			</div>
+			<div class="mdl-card__supporting-text">
+				{{instance.content|linebreaks}}
+			</div>
+			<div class="mdl-card__media">
+				{% if instance.extension in img_list %}
+					<img src="{{ instance.media.url }}">
+				{% elif instance.extension in vid_list %}
+					<video src="{{ instance.media.url }}" controls></video>
+				{% endif %}
+			</div>
+			<div class="mdl-card__actions">
+				<p class="comment-count" style="float:right; padding-right:20px">{{ comments.count }} comments</p>
+				<p class="like-count" style="padding-left:20px">{{ instance.like_count }} likes</p><hr>
 
-<div class="col-md-6 col-md-offset-3">
-	<div class="jumbotron" style="padding-top:5px;padding-bottom:20px">
-		<h2><a href="{% url 'user_detail' u=instance.user.username %}">{{instance.user.get_full_name}}</a> 
-		<small>{{ instance.timestamp|timesince }} ago</small></h2>
-		<p>{{instance.content|linebreaks}}</p>
-		{% if instance.extension in img_list %}
-			<img src="{{ instance.media.url }}" class="img-responsive">
-		{% elif instance.extension in vid_list %}
-			<video src="{{ instance.media.url }}" controls></video>
-		{% endif %}
-		<br><div class="row">
+				<a href="{% url 'posts:like' id=instance.id %}" class="like-btn"><button class="mdl-button mdl-js-button mdl-js-ripple-effect {% if user|has_liked:instance %}mdl-button--accent{% endif %}"><i class="material-icons">thumb_up</i> like</button></a>
+
+				<a href="#comments" class="mdl-button mdl-js-button mdl-js-ripple-effect comment-button">{{ comments.count }} Comment{% if comments.count > 1 %}s{% endif %}</a>
+			</div>
 			{% if instance.user == request.user %}
-			<div class="col-xs-3">
-				<a href="{% url 'posts:update' id=instance.id %}">Edit</a>
-			</div>
-			<div class="col-xs-3">
-				<a href="{% url 'posts:delete' id=instance.id %}" class="post-delete-btn">Delete</a>
-			</div>
-			{% endif %}
-			<div class="col-xs-3">
-				<a href="#comments" class="comment-button">{{ comments.count }} Comment{% if comments.count > 1 %}s{% endif %}</a>
-			</div>
-			<div class="col-xs-3">
-				<a href="{% url 'posts:like' id=instance.id %}" class="like-btn">Like (<span>{{ instance.like_count }}</span>)</a>
-			</div>
-		</div>		
-	</div>
-	<!-- Comments -->
-	<div class="section" id="comments">
-		<h2>Comments</h2><hr>
-		<form method="POST" action="">{% csrf_token %}
-			{{form|crispy}}
-			<input type="submit" >
-		</form><br>
-		{% for comment in comments %}
-			<blockquote>
-				<p>{{comment.content}}</p>
-				<footer>via {{comment.user}} 
-				<cite title="Source Title">{{comment.timestamp|timesince}} ago | {{comment.children.count}} {% if comment.children.count > 1 %}replies{% else %}reply{% endif %} | </cite>
-				<a href="#" class="reply-btn">Reply</a>
-				</footer>
-				<div class="comment-reply" style="display:none">
-					{% for child in comment.children %}
-						<blockquote>
-							<p>{{child.content}}</p>
-							<footer>via {{child.user}} <cite title="Source Title">{{child.timestamp|timesince}} ago</cite></footer>
-						</blockquote>
-					{% endfor %}
-					<form method="POST" action="">{% csrf_token %}
-						{{form|crispy}}
-						<input type="hidden" name="parent_id" value="{{ comment.id }}">
-						<input type="submit" value="Reply" class="btn btn-default">
-					</form><br>
+				<div class="mdl-card__menu">
+					<button id="card-menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon">
+						<i class="material-icons">more_vert</i>
+					</button>
+					<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="card-menu-lower-right">
+						<div class="mdl-list__item" style="padding:16px 2px 16px 10px">
+							<span class="mdl-list__item-primary-content">
+								<i class="material-icons">edit</i>
+								<span style="padding-left:10px">
+									<a href="{% url 'posts:update' id=instance.id %}" class="x">Edit</a>
+								</span>
+							</span>
+						</div>
+						<div class="mdl-list__item" style="padding:16px 2px 16px 10px">
+							<span class="mdl-list__item-primary-content">
+								<i class="material-icons">delete</i>
+								<span style="padding-left:10px">
+									<a href="{% url 'posts:delete' id=instance.id %}" class="post-delete-btn x">Delete</a>
+								</span>
+							</span>
+						</div>
+					</ul>
 				</div>
-			</blockquote>
-		{% endfor %}
+			{% endif %}
+		</div>
+
+		<!-- Comments -->
+		<div class="section" id="comments">
+			<h2>Comments</h2><hr>
+			<form method="POST" action="">{% csrf_token %}
+				<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width:100%">
+				  {{form.content}}
+				  <label class="mdl-textfield__label" for="id_{{form.content.name}}">write comment here</label>
+				</div>
+				<input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+			</form><br>
+			<ul class="demo-list-three mdl-list">
+				{% for comment in comments %}
+					<div class="mdl-grid">
+						<div class="mdl-cell mdl-cell--12-col-desktop">
+							<li class="mdl-list__item mdl-list__item--three-line">
+						    <span class="mdl-list__item-primary-content">
+						      <!-- <i class="material-icons mdl-list__item-avatar">person</i> -->
+						      <img src="{{comment.user.userprofile.profile_pic.url}}" class=" mdl-list__item-avatar">
+						      <span>{{comment.user}}</span>
+						      <span class="mdl-list__item-text-body">
+						        {{comment.content}}
+						      </span>
+						    </span>
+						    <span class="mdl-list__item-secondary-content">
+						      <a class="mdl-list__item-secondary-action reply-btn" href="#">reply</a>
+						    </span>
+						  </li>
+						</div>
+					</div>
+					<div class="mdl-grid comment-reply" style="display:none">
+						<div class="mdl-cell mdl-cell--11-col-desktop mdl-cell--1-offset-desktop">
+							<ul class="demo-list-three mdl-list">
+								{% for child in comment.children %}
+									<li class="mdl-list__item mdl-list__item--three-line">
+									  <span class="mdl-list__item-primary-content">
+									    <img src="{{comment.user.userprofile.profile_pic.url}}" class=" mdl-list__item-avatar">
+									    <span>{{child.user}}</span>
+									    <span class="mdl-list__item-text-body">
+									      {{child.content}}
+									    </span>
+									  </span>
+									  <span class="mdl-list__item-secondary-content">
+									    <a class="mdl-list__item-secondary-action" href="#"><i class="material-icons">star</i></a>
+									  </span>
+									</li>
+								{% endfor %}
+							</ul>
+							<form method="POST" action="">{% csrf_token %}
+								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" style="width:100%">
+									{{form.content}}
+									<label class="mdl-textfield__label" for="id_{{form.content.name}}">write your reply here</label>
+								</div>
+								<input type="hidden" name="parent_id" value="{{ comment.id }}">
+								<input type="submit" value="Reply" class="btn btn-default">
+							</form><br>
+						</div>
+					</div>
+				{% endfor %}
+			</ul>
+		</div>
 	</div>
 </div>
-
 {% endblock %}
-
-	

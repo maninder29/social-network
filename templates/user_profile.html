@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="mdl-grid">
+	<div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--3-offset-desktop 
+			mdl-cell--6-col-tablet mdl-cell--1-offset-tablet mdl-cell--4-col-phone">
+		<form method="post" action="" enctype="multipart/form-data">{% csrf_token %}
+			{{form.gender}}
+			<!-- <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="flash1">
+			  <input checked class="mdl-radio__button" id="flash1" name="flash" type="radio" value="on">
+			  <span class="mdl-radio__label">Always on</span>
+			</label>
+			<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="flash2">
+			  <input class="mdl-radio__button" id="flash2" name="flash" type="radio" value="off">
+			  <span class="mdl-radio__label">Always off</span>
+			</label> -->
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+			  {{form.phone}}
+			  <label class="mdl-textfield__label" for="id_{{form.phone.name}}">phone</label>
+			</div>
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+			  {{form.dob}}
+			  <label class="mdl-textfield__label" for="id_{{form.dob.name}}">date of birth</label>
+			</div>
+			<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+			  {{form.address}}
+			  <label class="mdl-textfield__label" for="id_{{form.address.name}}">address</label>
+			</div>
+			{{form.relationship_status}}
+			<div>
+			  {{form.profile_pic}}
+			  <label for="id_{{form.profile_pic.name}}"></label>
+			</div><br>
+			<button type="submit" class="mdl-button mdl-js-button mdl-button--raised 
+				mdl-js-ripple-effect mdl-button--accent">Submit</button>
+		</form>
+	</div>
+</div>
+{% endblock %}

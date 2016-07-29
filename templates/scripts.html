@@ -1,12 +1,11 @@
 {% load staticfiles %}
 
+<script src="{% static 'js/material.min.js' %}"></script>
 <script src="{% static 'js/jquery.min.js' %}"></script>
-<script>window.jQuery || document.write('<script src="{% static 'js/jquery.min.js' %}"><\/script>')</script>
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
 <script type="text/javascript">
   $(".reply-btn").click(function(event){
     event.preventDefault();
-    $(this).parent().next(".comment-reply").fadeToggle();
+    $(this).parent().parent().parent().parent().next(".comment-reply").fadeToggle();
   })
 
   $(".like-btn").click(function(event){
@@ -18,11 +17,12 @@
       type:'get',
       data:data,
       success: function(data){
-        var span = self.children("span")
-        span.text(data.like_count)
-        self.next('p').text(data.like_status)
+        self.siblings('p.like-count').text(data.like_count+" likes")
+        self.children('button').toggleClass('mdl-button--accent')
+        console.log(data.like_count)
       },
       failure: function(response, error){
+      	console.log(error)
        self.click();
       }
     })
@@ -37,11 +37,15 @@
       data:ctx,
       success: function(data){
         if (data.error) {
-          $(".alert-danger").css("display", "inherit");
-          $(".alert-danger").children('span').text('You are already friend of '+ data.to_username)
+          var notification = document.querySelector('.mdl-js-snackbar');
+          notification.MaterialSnackbar.showSnackbar({
+            message: 'You are already friend of '+ data.to_username, timeout: 5000
+          });
         } else{
-          $(".alert-success").css("display", "inherit");
-          $(".alert-success").children('span').text('Friend request sent successfully :)')
+          var notification = document.querySelector('.mdl-js-snackbar');
+          notification.MaterialSnackbar.showSnackbar({
+            message: 'Friend request sent successfully :)', timeout: 5000
+          });
         }
       },
       failure: function(error){
@@ -60,14 +64,20 @@
       data:ctx,
       success: function(data){
         if (data.error) {
-          $(".alert-danger").css("display", "inherit");
-          $(".alert-danger").children('span').text('You have already started following '+ data.followee_username)
+          var notification = document.querySelector('.mdl-js-snackbar');
+          notification.MaterialSnackbar.showSnackbar({
+            message: 'You have already started following '+ data.followee_username
+          });
         } else if (data.are_friends) {
-          $(".alert-danger").css("display", "inherit");
-          $(".alert-danger").children('span').text('You both are already friends')
-        }else {
-          $(".alert-success").css("display", "inherit");
-          $(".alert-success").children('span').text('You have successfully started following '+ data.followee_username)
+          var notification = document.querySelector('.mdl-js-snackbar');
+          notification.MaterialSnackbar.showSnackbar({
+            message: 'You both are already friends'
+          });
+        } else {
+          var notification = document.querySelector('.mdl-js-snackbar');
+          notification.MaterialSnackbar.showSnackbar({
+            message: 'You have successfully started following '+ data.followee_username
+          });
         }
       },
       failure: function(error){

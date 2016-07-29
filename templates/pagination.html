@@ -1,6 +1,6 @@
 {% load staticfiles %}
-
-<div class="col-md-6 col-md-offset-3">
+{% comment %}
+<div class="mdl-cell mdl-cell--6-col mdl-cell--5-offset">
   <div class="pagination">
     <span class="step-links">
       {% if object_list.has_previous %}
@@ -13,5 +13,39 @@
         <a href="?page={{ object_list.next_page_number }}" class="pag-a">next</a>
       {% endif %}
     </span>
+  </div>
+</div>
+{% endcomment %}
+<div class="mdl-grid">
+  <div class="mdl-cell" style="margin:auto">
+    <div class="pagination" style="text-align:center">
+
+        {% if object_list.has_previous %}
+        <a href="?page={{ object_list.previous_page_number }}" class="pag-a">
+        <button class="mdl-button mdl-js-button mdl-button--icon">
+          <i class="material-icons">chevron_left</i>
+        </button></a>
+        {% else %}
+        <button class="mdl-button mdl-js-button mdl-button--icon" disabled>
+          <i class="material-icons">chevron_left</i>
+        </button></a>
+        {% endif %}
+
+        <span>
+          Page {{ object_list.number }}/{{ object_list.paginator.num_pages }}
+        </span>
+
+        {% if object_list.has_next %}
+        <a href="?page={{ object_list.next_page_number }}" class="pag-a">
+        <button class="mdl-button mdl-js-button mdl-button--icon">
+          <i class="material-icons">chevron_right</i>
+        </button></a>
+        {% else %}
+        <button class="mdl-button mdl-js-button mdl-button--icon" disabled>
+          <i class="material-icons">chevron_right</i>
+        </button></a>
+        {% endif %}
+
+    </div>
   </div>
 </div>

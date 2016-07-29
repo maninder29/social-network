@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Post,Comment,Like
+from .models import Post,Comment,Like,UserProfile
 
 class PostModelAdmin(admin.ModelAdmin):
 	list_display = ["user", "updated", "timestamp", "like_count"]
@@ -15,3 +15,4 @@ class PostModelAdmin(admin.ModelAdmin):
 admin.site.register(Post, PostModelAdmin)
 admin.site.register(Comment)
 admin.site.register(Like)
+admin.site.register(UserProfile)

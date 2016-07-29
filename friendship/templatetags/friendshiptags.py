@@ -38,12 +38,12 @@ def friend_requests(user):
     return {'friend_requests': Friend.objects.requests(user)}
 
 
-@register.inclusion_tag('friendship/templatetags/friend_request_count.html')
+@register.assignment_tag
 def friend_request_count(user):
     """
     Inclusion tag to display the count of unread friend requests
     """
-    return {'friend_request_count': Friend.objects.unread_request_count(user)}
+    return Friend.objects.unread_request_count(user)
 
 
 @register.inclusion_tag('friendship/templatetags/friend_count.html')

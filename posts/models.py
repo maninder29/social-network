@@ -72,6 +72,32 @@ class Comment(models.Model):
             return True
         return False
 
+def profile_pic_upload(instance, filename):
+    return'{0}/{1}/{2}'.format(instance.user.username, 'profile_pictures', filename)
+
+GENDER_CHOICES=(
+    ('male,Male'),
+    ('female','Female'),
+    ('other','Other')
+)
+
+RELATIONSHIP_CHOICES=(
+    ('single','Single'),
+    ('married','Married'),
+    ('complicated',"It's complicated" )
+)
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    profile_pic = models.ImageField(upload_to=profile_pic_upload, null=True, blank=True)
+    gender = models.CharField(max_length=10)#, choices=GENDER_CHOICES)
+    address = models.TextField(null=True, blank=True)
+    phone = models.CharField(max_length=10)
+    dob = models.DateField()
+    relationship_status = models.CharField(max_length=20)#, choices=RELATIONSHIP_CHOICES)
+    def __unicode__(self):
+        return self.user.username
+
 
 def post_pre_delete_reciever(sender,instance,*args,**kwargs):
     content_type=ContentType.objects.get_for_model(sender)

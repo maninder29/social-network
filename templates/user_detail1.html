@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load friendshiptags %}
+{% load staticfiles %}
+
+{% block content %}
+<div class="row" style="color:black">
+	<div class="alert alert-danger" role="alert" style="display:none;">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<span></span>
+	</div>
+	<div class="alert alert-success" role="alert" style="display:none;">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<span></span>
+	</div>
+	<div class="col-md-4">
+		<img src="{% static 'img/a.png' %}" class="img-responsive">
+		<h2 style="text-align:center"><u>{{current_user.get_full_name.capitalize}}</u></h2>
+		{% if current_user != request.user %}
+			<div class="row">
+				<div class="col-xs-6">
+					<form action="{% url 'friendship_add_friend' current_user.username %}" method="POST">{% csrf_token %}
+						<input type="submit" value="Add Friend" class="add-friend-btn">
+					</form>
+				</div>
+				<div class="col-xs-6">
+					<form action="{% url 'follower_add' current_user.username %}" method="POST">{% csrf_token %}
+						<input type="submit" value="Follow" class="follow-btn">
+					</form>
+				</div>
+			</div>
+		{% endif %}
+		<!-- Friends -->
+			<h2><a href="{% url 'friendship_view_friends' username=current_user.username %}">Friends</a></h2>
+			<ul>{% for f in friends %}
+			    {% if f.first_name or f.last_name %}
+			    <form action="{% url 'friendship_remove' f.username %}" method="POST">{% csrf_token %}
+					<li><a href="{% url 'user_detail' u=f.username %}">{{ f.first_name }} {{ f.last_name }}</a><input type="submit" value="Remove" style="margin-left:40px"></li>
+				</form>
+			    {% else %}
+			    <form action="{% url 'friendship_remove' f.username %}" method="POST">{% csrf_token %}
+					<li><a href="{% url 'user_detail' u=f.username %}">{{ f.username }}</a><input type="submit" value="Remove" style="margin-left:40px"></li>
+				</form>
+			    {% endif %}
+		    {% endfor %}</ul>
+
+		<!-- Following : List who this user follows -->
+			<h2><a href="{% url 'friendship_following' username=current_user.username %}">Following</a></h2>
+			<ul>{% for f in following %}
+		    	{% if f.first_name or f.last_name %}
+			    <form action="{% url 'followee_remove' f.username %}" method="POST">{% csrf_token %}
+					<li><a href="{% url 'user_detail' u=f.username %}">{{ f.first_name }} {{ f.last_name }}</a><input type="submit" value="Remove" style="margin-left:40px"></li>
+				</form>
+			    {% else %}
+			    <form action="{% url 'followee_remove' f.username %}" method="POST">{% csrf_token %}
+					<li><a href="{% url 'user_detail' u=f.username %}">{{ f.username }}</a><input type="submit" value="Remove" style="margin-left:40px"></li>
+				</form>
+			    {% endif %}
+		    {% endfor %}</ul>
+
+		<!-- Followers : List this user's followers -->
+			<h2><a href="{% url 'friendship_followers' username=current_user.username %}">Followers</a></h2>
+			<ul>{% for f in followers %}
+			    {% if f.first_name or f.last_name %}
+			    <form action="{% url 'follower_remove' f.username %}" method="POST">{% csrf_token %}
+					<li><a href="{% url 'user_detail' u=f.username %}">{{ f.first_name }} {{ f.last_name }}</a><input type="submit" value="Remove" style="margin-left:40px"></li>
+				</form>
+			    
+			    {% else %}
+			    <form action="{% url 'follower_remove' f.username %}" method="POST">{% csrf_token %}
+					<li><a href="{% url 'user_detail' u=f.username %}">{{ f.username }}</a><input type="submit" value="Remove" style="margin-left:40px"></li>
+				</form>
+			    {% endif %}
+		    {% endfor %}</ul>
+
+		{% if current_user == request.user %}
+		<!-- Unread friend requests -->
+			<h2>Unread friend requests</h2>
+			{% for f in unread_friend_requests %}
+				<div class="row">
+					<div class="col-md-6">
+						<a href="{% url 'user_detail' u=f.from_user.username %}">{{f.from_user}}</a>
+					</div>
+					<div class="col-md-3">
+						<form action="{% url 'friendship_accept' friendship_request_id=f.id %}" method="POST">{% csrf_token %}
+							<input type="submit" value="Accept" class="btn">
+						</form>					
+					</div>
+					<div class="col-md-3">
+						<form action="{% url 'friendship_reject' friendship_request_id=f.id %}" method="POST">{% csrf_token %}
+						    <input type="submit" value="Reject" class="btn">
+						</form>
+					</div>
+				</div>
+				<br>
+			{% endfor %}
+
+		<!-- Friend requests sent : which are not accepted yet -->
+			<h2>Friend requests sent</h2>
+			<ul>{% for f in sent_friend_requests %}
+			    {% if f.to_user.first_name or f.to_user.last_name %}
+			    <form action="{% url 'friendship_cancel' friendship_request_id=f.id %}" method="POST">{% csrf_token %}
+			    	<li><a href="{% url 'user_detail' u=f.to_user.username %}">{{ f.to_user.first_name }} {{ f.to_user.last_name }}</a><input type="submit" value="cancel" style="margin-left:40px"></li>
+				</form>
+			    {% else %}
+			    <form action="{% url 'friendship_cancel' friendship_request_id=f.id %}" method="POST">{% csrf_token %}
+			    	<li><a href="{% url 'user_detail' u=f.to_user.username %}">{{ f.to_user.username }}</a><input type="submit" value="cancel" style="margin-left:40px"></li>
+				</form>
+			    {% endif %}
+		    {% endfor %}</ul>
+		{% endif %}
+	</div>
+	<div class="col-md-6 col-md-offset-1">
+		{% for obj in posts %}
+            <div class="jumbotron" style="padding-top:5px;padding-bottom:20px">
+              <h2><a href="{% url 'user_detail' u=obj.user.username %}">{{obj.user.get_full_name}}</a></h2>
+              <p>{{obj.content|linebreaks|truncatechars:120}} <a href="{{ obj.get_absolute_url }}">read more</a></p>
+              {% if obj.extension in img_list %}
+                <img src="{{ obj.media.url }}" class="img-responsive">
+              {% elif obj.extension in vid_list %}
+                <video src="{{ obj.media.url }}" controls></video>
+              {% endif %}
+              <a href="{% url 'posts:like' id=obj.id %}" class="like-btn">Like (<span>{{ obj.like_count }}</span>)</a>
+              
+            </div>
+        {% endfor %}
+	</div>
+</div>
+{% comment %}{% if user|has_liked:obj %}<p>liked</p>{% else %}<p>not liked</p>{% endif %}{% endcomment %}
+{% endblock %}

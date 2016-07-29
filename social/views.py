@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from friendship.models import Friend, Follow
 from django.shortcuts import render,redirect
 from posts.models import Post
-
+from posts.forms import UserProfileForm
 
 def user_detail(request,u):
 	user=User.objects.get(username=u)
@@ -28,3 +28,16 @@ def user_detail(request,u):
 		"vid_list": ["MP4","mp4","WebM","webm","WEBM"],
 	}
 	return render(request,"user_detail.html", context)
+
+
+def user_detail_view(request):
+	form=UserProfileForm(request.POST or None)
+	if form.is_valid():
+		instance=form.save(commit=False)
+		instance.user=request.user
+		instance.save()
+		return redirect('profile/')
+	context={
+		"form":form,
+	}
+	return render(request,"user_profile.html",context)

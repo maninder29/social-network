@@ -2,40 +2,124 @@
 {% load post_tags %}
 
 <!DOCTYPE html>
-<html lang="en">
-  {% include 'head.html' %}
-
-  <body>
-    {% include 'navbar.html' %}
-    <div class="container">
-      {% block content %}
-        {% if object_list %}
-        {% for obj in object_list %}
-          <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-              <div class="jumbotron" style="padding-top:5px;padding-bottom:20px">
-                <h2><a href="{% url 'user_detail' u=obj.user.username %}">{{obj.user.get_full_name}}</a></h2>
-                <p>{{obj.content|linebreaks|truncatechars:120}} <a href="{{ obj.get_absolute_url }}">read more</a></p>
-                {% if obj.extension in img_list %}
-                  <img src="{{ obj.media.url }}" class="img-responsive">
-                {% elif obj.extension in vid_list %}
-                  <video src="{{ obj.media.url }}" controls></video>
-                {% endif %}
-                <a href="{% url 'posts:like' id=obj.id %}" class="like-btn">Like (<span>{{ obj.like_count }}</span>)</a>
-                {% if user|has_liked:obj %}<p>liked</p>{% else %}<p>not liked</p>{% endif %}
-              </div>
-            </div>
-          </div>
-        {% endfor %}
-        {% include 'pagination.html' %}
-        {% else %}
-          <img src="{% static 'img/initial-bg.png' %}" class="img-responsive">
-        
-        {% endif %}
-      {% endblock %}
-    </div>
-
-    {% include 'scripts.html' %}
-  
-  </body>
+<html>
+<head>
+	<title>MENSLAND</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{% static 'css/material.min.css' %}">
+	<style>
+		@font-face {
+		  font-family: 'Material Icons';
+		  font-style: normal;
+		  font-weight: 400;
+		  src: local('Material Icons'), local('MaterialIcons-Regular'), 
+		  url("{% static 'css/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2' %}") format('woff2');
+		}
+		.material-icons {
+		  font-family: 'Material Icons';
+		  font-weight: normal;
+		  font-style: normal;
+		  font-size: 24px;
+		  line-height: 1;
+		  letter-spacing: normal;
+		  text-transform: none;
+		  display: inline-block;
+		  white-space: nowrap;
+		  word-wrap: normal;
+		  direction: ltr;
+		  -webkit-font-feature-settings: 'liga';
+		  -webkit-font-smoothing: antialiased;
+		}
+		.card-wide.mdl-card, .mdl-textfield, .demo-list-three {
+		  width: 100%;
+		}
+		img,video {
+			width: 100%;
+			height: 100%;
+		}
+		.card-image.mdl-card {
+		  width: 100%;
+		  height: 256px;
+		  background: url('{% static "img/a.png" %}') center / cover;
+		}
+		.card-image > .mdl-card__actions {
+		  height: 52px;
+		  padding: 16px;
+		  background: rgba(0, 0, 0, 0.2);
+		}
+		.card-image__filename {
+		  color: #fff;
+		  font-size: 14px;
+		  font-weight: 500;
+		}
+		.x {
+			color: black;
+			text-decoration: none;
+		}
+		.x:hover {
+			color: rgb(255,64,129);
+		}
+	</style>
+</head>
+<body>
+	<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+		{% include 'navbar.html' %}
+		<main class="mdl-layout__content">
+			<div class="page-content" style="padding-bottom: 100px">
+			<!-- Your content goes here -->
+			{% block content %}
+				{% if object_list %}
+					{% for obj in object_list %}
+						<div class="mdl-grid">
+							<div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--3-offset-desktop 
+							mdl-cell--6-col-tablet mdl-cell--1-offset-tablet mdl-cell--4-col-phone">
+								<div class="card-wide mdl-card mdl-shadow--8dp">
+									<div class="mdl-card__title">
+										<h2 class="mdl-card__title-text"><a href="{% url 'user_detail' u=obj.user.username %}">
+										{{obj.user.get_full_name}}</a></h2>
+									</div>
+									<div class="mdl-card__supporting-text">
+										{{obj.content|linebreaks|truncatechars:360}}
+									</div>
+									<div class="mdl-card__media">
+										{% if obj.extension in img_list %}
+											<img src="{{ obj.media.url }}">
+										{% elif obj.extension in vid_list %}
+											<video src="{{ obj.media.url }}" controls></video>
+										{% endif %}
+									</div>
+									<div class="mdl-card__actions">
+										<p class="like-count" style="padding-left:20px">{{ obj.like_count }} likes</p><hr>
+										<a href="{% url 'posts:like' id=obj.id %}" class="like-btn"><button class="mdl-button mdl-js-button mdl-js-ripple-effect {% if user|has_liked:obj %}mdl-button--accent{% endif %}"><i class="material-icons">thumb_up</i> like</button></a>
+										<a href="{{ obj.get_absolute_url }}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">read more</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+					{% include 'pagination.html' %}
+				{% else %}
+					<img src="{% static 'img/initial-bg.png' %}" class="img-responsive">
+				{% endif %}
+				<!-- Post create button with ripple -->
+					{% if user.is_authenticated %}
+					<a href="{% url 'posts:create' %}">
+					<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-layout--large-screen-only" style="position:fixed; bottom:50px; right:60px;">
+						<i class="material-icons">add</i>
+					</button>
+					</a>
+					<a href="{% url 'posts:create' %}">
+					<button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-layout--small-screen-only" style="position:fixed; bottom:50px; right:40px; z-index:999">
+						<i class="material-icons">add</i>
+					</button>
+					</a>
+					{% endif %}
+			
+			{% endblock %}
+			</div>
+	  </main>
+	</div>
+	<!-- Scripts -->
+	{% include 'scripts.html' %}
+</body>
 </html>

@@ -9,6 +9,7 @@ from .views import (
 	post_delete,
 	post_like,
 	# user_detail,
+	oh,
 	)
 
 urlpatterns = [
@@ -18,5 +19,6 @@ urlpatterns = [
     url(r'^(?P<id>\d+)/edit/$', post_update, name='update'),
     url(r'^(?P<id>\d+)/delete/$', post_delete, name='delete'),
     url(r'^(?P<id>\d+)/like/$', post_like, name='like'),
+    url(r'^oh/$', oh, name='oh')
 ]
 

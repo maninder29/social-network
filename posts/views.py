@@ -137,6 +137,8 @@ def post_like(request, id):
 		return redirect("posts:list")
 
 
+def oh(request):
+	return render(request, 'list.html', {})
 # def user_detail(request,u):
 # 	user=User.objects.get(username=u)
 # 	friends=Friend.objects.friends(user)
