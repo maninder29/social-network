@@ -10,10 +10,10 @@
 			  {{form.content}}
 			  <label class="mdl-textfield__label" for="id_{{form.content.name}}">write content here</label>
 			</div>
-			<div>
-			  {{form.media}}
-			  <label for="id_{{form.media.name}}"></label>
-			</div><br>
+			{{form.media}}
+			<label for="id_{{form.media.name}}" class="mdl-button mdl-js-button mdl-button--primary" style="padding-left:0px">
+			    <i class="material-icons">backup</i> Upload file
+			</label><br><br>
 			<button type="submit" class="mdl-button mdl-js-button mdl-button--raised 
 			mdl-js-ripple-effect mdl-button--accent">Submit</button>
 		</form>

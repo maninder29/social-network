@@ -4,7 +4,7 @@ import os
 
 class PostForm(forms.ModelForm):
     content=forms.CharField(widget=forms.Textarea(attrs={'class':'mdl-textfield__input','rows':4}))
-    media=forms.FileField(widget=forms.FileInput(attrs={'class':"mdl-button mdl-js-button mdl-button--raised mdl-button--colored"}))
+    # media=forms.FileField(widget=forms.FileInput(attrs={'class':"mdl-button mdl-js-button mdl-button--raised mdl-button--colored"}))
     class Meta:
         model = Post
         fields = [
