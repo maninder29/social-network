@@ -3,7 +3,8 @@
   {% for friend_request in friend_requests %}
   <div class="mdl-list__item" style="padding:16px 2px 16px 10px">
     <span class="mdl-list__item-primary-content">
-      <i class="material-icons mdl-list__item-avatar">person</i>
+      <!-- <i class="material-icons mdl-list__item-avatar">person</i> -->
+      <img src="{{friend_request.from_user.userprofile.profile_pic.url}}" class="mdl-list__item-avatar">
       <span><a href="{% url 'user_detail' friend_request.from_user.username %}" class="x">
       {{ friend_request.from_user.get_full_name }}</a></span>
     </span>

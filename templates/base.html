@@ -40,7 +40,6 @@
 		.card-image.mdl-card {
 		  width: 100%;
 		  height: 256px;
-		  background: url('{% static "img/a.png" %}') center / cover;
 		}
 		.card-image > .mdl-card__actions {
 		  height: 52px;
@@ -89,7 +88,8 @@
 										{% endif %}
 									</div>
 									<div class="mdl-card__actions">
-										<p class="like-count" style="padding-left:20px">{{ obj.like_count }} likes</p><hr>
+										<span class="like-count" style="padding-left:20px" id="tt5{{obj.id}}">{{ obj.like_count }}</span> likes<hr>
+										<span class="mdl-tooltip mdl-tooltip--top mdl-tooltip--large" for="tt5{{obj.id}}">{% liked_by_users obj %}</span>
 										<a href="{% url 'posts:like' id=obj.id %}" class="like-btn"><button class="mdl-button mdl-js-button mdl-js-ripple-effect {% if user|has_liked:obj %}mdl-button--accent{% endif %}"><i class="material-icons">thumb_up</i> like</button></a>
 										<a href="{{ obj.get_absolute_url }}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">read more</a>
 									</div>
@@ -116,6 +116,16 @@
 					{% endif %}
 			
 			{% endblock %}
+		  <!-- <button type="button" class="mdl-button show-modal">Show Modal</button> -->
+			  <dialog class="mdl-dialog mdl-dialog-post-delete">
+			    <div class="mdl-dialog__content">
+			      <p>Are you sure you wanna delete this post?</p>
+			    </div>
+			    <div class="mdl-dialog__actions">
+			      <button type="button" class="mdl-button agree">Yes</button>
+			      <button type="button" class="mdl-button close">No</button>
+			    </div>
+			  </dialog>
 			</div>
 	  </main>
 	</div>

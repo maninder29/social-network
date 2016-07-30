@@ -5,42 +5,46 @@
 {% block title %}{% trans "Log in" %}{% endblock %}
 
 {% block content %}
-<form method="post" action="">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <input class="btn btn-primary" type="submit" value="{% trans 'Log in' %}" />
-    <input type="hidden" name="next" value="{{ next }}" />
-</form>
-<br>
-<p>{% trans "Forgot your password?" %} <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>.</p>
-<p>{% trans "Not a member?" %} <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>.</p>
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--6-col-desktop mdl-cell--3-offset-desktop 
+            mdl-cell--6-col-tablet mdl-cell--1-offset-tablet mdl-cell--4-col-phone">
+        <h2>Login</h2>
+        <form method="post" action="">{% csrf_token %}
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              {{form.username}}
+              <label class="mdl-textfield__label" for="id_{{form.username.name}}">username</label>
+            </div>
+              {% if form.username.errors %}
+                {% for e in form.first_name.errors %}
+                    <p style="color:red">{{e}}</p>
+                {% endfor %}
+              {% endif %}
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              {{form.password}}
+              <label class="mdl-textfield__label" for="id_{{form.password.name}}">password</label>
+            </div>
+              {% if form.password.errors %}
+                {% for e in form.password.errors %}
+                    <p style="color:red">{{e}}</p>
+                {% endfor %}
+              {% endif %}
+            <button type="submit" class="mdl-button mdl-js-button mdl-button--raised 
+            mdl-js-ripple-effect mdl-button--accent">Log in</button>
+            <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+        <br>
+        <p>{% trans "Forgot your password?" %} <a href="{% url 'auth_password_reset' %}">{% trans "Reset it" %}</a>.</p>
+        <p>{% trans "Not a member?" %} <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>.</p>
+    </div>
+</div>
+
 {% endblock %}
 
 
 {% comment %}
-**registration/login.html**
-
-It's your responsibility to provide the login form in a template called
-registration/login.html by default. This template gets passed four
-template context variables:
-
-``form``
-    A Form object representing the login form. See the forms
-    documentation for more on Form objects.
 
 ``next``
     The URL to redirect to after successful login. This may contain a
     query string, too.
 
-``site``
-    The current Site, according to the SITE_ID setting. If you don't
-    have the site framework installed, this will be set to an instance
-    of RequestSite, which derives the site name and domain from the
-    current HttpRequest.
-
-``site_name``
-    An alias for site.name. If you don't have the site framework
-    installed, this will be set to the value of
-    request.META['SERVER_NAME']. For more on sites, see The
-    "sites" framework.
 {% endcomment %}

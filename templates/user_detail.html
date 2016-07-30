@@ -16,6 +16,12 @@
 	<div class="mdl-cell mdl-cell--4-col-desktop">
 		<img src="{{current_user.userprofile.profile_pic.url}}" class="img-responsive">
 		<h2 style="text-align:center"><u>{{current_user.get_full_name.capitalize}}</u></h2>
+		<div style="color:blue">
+			<p>Phone number : {{current_user.userprofile.phone}} </p>
+			<p>Date of Birth : {{current_user.userprofile.dob}} </p>
+			<p>Address : {{current_user.userprofile.address}} </p>
+			<p>Relationship Status : {{current_user.userprofile.relationship_status}}</p>
+		</div>
 		{% if current_user != request.user %}
 			<div class="mdl-grid">
 				<div class="mdl-cell mdl-cell--6-col-desktop">
@@ -43,7 +49,7 @@
 					{% if request.user == current_user %}
 					<form action="{% url 'friendship_remove' f.username %}" method="POST">{% csrf_token %}
 						<input type="submit" value="clear" class="mdl-list__item-secondary-action x material-icons mdl-button" id="tt1{{f.id}}">
-						<div class="mdl-tooltip" for="tt1{{f.id}}">Remove friend</div>
+						<div class="mdl-tooltip mdl-tooltip--large" for="tt1{{f.id}}">Remove friend</div>
 					</form>
 					{% endif %}
 				</li>
@@ -62,7 +68,7 @@
 					{% if request.user == current_user %}
 					<form action="{% url 'follower_remove' f.username %}" method="POST">{% csrf_token %}
 						<input type="submit" value="clear" class="mdl-list__item-secondary-action x material-icons mdl-button" id="tt2{{f.id}}">
-						<div class="mdl-tooltip" for="tt2{{f.id}}">remove follower</div>
+						<div class="mdl-tooltip mdl-tooltip--large" for="tt2{{f.id}}">remove follower</div>
 					</form>
 					{% endif %}
 				</li>
@@ -81,7 +87,7 @@
 					{% if request.user == current_user %}
 					<form action="{% url 'followee_remove' f.username %}" method="POST">{% csrf_token %}
 						<input type="submit" value="clear" class="mdl-list__item-secondary-action x material-icons mdl-button" id="tt3{{f.id}}">
-						<div class="mdl-tooltip" for="tt3{{f.id}}">remove followee</div>
+						<div class="mdl-tooltip mdl-tooltip--large" for="tt3{{f.id}}">remove followee</div>
 					</form>
 					{% endif %}
 				</li>
@@ -99,8 +105,8 @@
 						<a href="{% url 'user_detail' u=f.to_user.username %}" class="x">{{f.to_user.get_full_name}}</a>
 					</span>
 					<form action="{% url 'friendship_cancel' f.id %}" method="POST">{% csrf_token %}
-						<input type="submit" value="clear" class="mdl-list__item-secondary-action x material-icons mdl-button" id="tt3">
-						<div class="mdl-tooltip" for="tt3">cancel request</div>
+						<input type="submit" value="clear" class="mdl-list__item-secondary-action x material-icons mdl-button" id="tt4{{f.id}}">
+						<div class="mdl-tooltip mdl-tooltip--large" for="tt4{{f.id}}">cancel request</div>
 					</form>
 				</li>
 				{% endfor %}
@@ -133,7 +139,10 @@
 								{% endif %}
 							</div>
 							<div class="mdl-card__actions">
-								<p class="like-count" style="padding-left:20px">{{ obj.like_count }} likes</p><hr>
+								<span class="like-count" style="padding-left:20px" id="tt5{{obj.id}}">{{ obj.like_count }}</span> likes<hr>
+								<!-- Multiline Tooltip for likers -->
+								<span class="mdl-tooltip mdl-tooltip--top mdl-tooltip--large" for="tt5{{obj.id}}">{% liked_by_users obj %}</span>
+
 								<a href="{% url 'posts:like' id=obj.id %}" class="like-btn"><button class="mdl-button mdl-js-button mdl-js-ripple-effect {% if user|has_liked:obj %}mdl-button--accent{% endif %}"><i class="material-icons">thumb_up</i> like</button></a>
 								<a href="{{ obj.get_absolute_url }}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">read more</a>
 							</div>

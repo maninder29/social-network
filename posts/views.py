@@ -111,16 +111,12 @@ def post_like(request, id):
 			l.delete()
 			post.like_count-=1
 			post.save()
-			like_count=post.like_count
-			data={"like_count":like_count, "like_status":'not liked'}
-			return JsonResponse(data)
+			return JsonResponse({})
 		l=Like(user=user, post=post)
 		l.save()
 		post.like_count+=1
 		post.save()
-		like_count=post.like_count
-		data={"like_count":like_count, "like_status":'liked'}
-		return JsonResponse(data)
+		return JsonResponse({})
 	else:
 		post=Post.objects.get(id=id)
 		user=request.user
@@ -136,30 +132,3 @@ def post_like(request, id):
 		post.save()
 		return redirect("posts:list")
 
-
-def oh(request):
-	return render(request, 'list.html', {})
-# def user_detail(request,u):
-# 	user=User.objects.get(username=u)
-# 	friends=Friend.objects.friends(user)
-# 	unread_friend_requests=Friend.objects.unread_requests(user=user)
-# 	unrejected_friend_requests=Friend.objects.unrejected_requests(user=user)
-# 	rejected_friend_requests=Friend.objects.rejected_requests(user=user)
-# 	sent_friend_requests=Friend.objects.sent_requests(user=user)
-# 	followers=Follow.objects.followers(user)
-# 	following=Follow.objects.following(user)
-# 	posts=Post.objects.filter(user=user)
-# 	context={
-# 		"current_user":user,
-# 		"friends":friends,
-# 		"unread_friend_requests":unread_friend_requests,
-# 		"unrejected_friend_requests":unrejected_friend_requests,
-# 		"rejected_friend_requests":rejected_friend_requests,
-# 		"sent_friend_requests":sent_friend_requests,
-# 		"followers":followers,
-# 		"following":following,
-# 		"posts":posts,
-# 		"img_list": ["jpg","JPG","jpeg","JPEG","png","PNG","gif","GIF"],
-# 		"vid_list": ["MP4","mp4","WebM","webm","WEBM"],
-# 	}
-# 	return render(request,"user_detail.html", context)

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
-from django.db.models.signals import pre_delete
+from django.db.models.signals import pre_delete, post_save
 from django.db import models
 import os
 
@@ -89,15 +89,20 @@ RELATIONSHIP_CHOICES=(
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User)
-    profile_pic = models.ImageField(upload_to=profile_pic_upload, null=True, blank=True)
-    gender = models.CharField(max_length=10)#, choices=GENDER_CHOICES)
+    profile_pic = models.ImageField(upload_to=profile_pic_upload, default='default.png', null=True, blank=True)
+    gender = models.CharField(max_length=10, null=True, blank=True)#, choices=GENDER_CHOICES)
     address = models.TextField(null=True, blank=True)
-    phone = models.CharField(max_length=10)
-    dob = models.DateField()
-    relationship_status = models.CharField(max_length=20)#, choices=RELATIONSHIP_CHOICES)
+    phone = models.CharField(max_length=10, null=True, blank=True)
+    dob = models.DateField(null=True, blank=True)
+    relationship_status = models.CharField(max_length=20, null=True, blank=True)#, choices=RELATIONSHIP_CHOICES)
     def __unicode__(self):
         return self.user.username
 
+
+def user_profile_post_save_reciever(instance, created, *args, **kwargs):
+    if created:
+        u=UserProfile(user=instance)
+        u.save()
 
 def post_pre_delete_reciever(sender,instance,*args,**kwargs):
     content_type=ContentType.objects.get_for_model(sender)
@@ -114,5 +119,6 @@ def post_pre_delete_reciever(sender,instance,*args,**kwargs):
         pass
 
 
+post_save.connect(user_profile_post_save_reciever, sender=User)
 
 pre_delete.connect(post_pre_delete_reciever, sender=Post)

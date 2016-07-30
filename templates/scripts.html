@@ -3,6 +3,14 @@
 <script src="{% static 'js/material.min.js' %}"></script>
 <script src="{% static 'js/jquery.min.js' %}"></script>
 <script type="text/javascript">
+
+  //////////// dialog box /////////////
+  var dialog = document.querySelector('dialog');
+  if (! dialog.showModal) {
+    dialogPolyfill.registerDialog(dialog);
+  }
+  /////////////////////////////////////
+
   $(".reply-btn").click(function(event){
     event.preventDefault();
     $(this).parent().parent().parent().parent().next(".comment-reply").fadeToggle();
@@ -11,19 +19,23 @@
   $(".like-btn").click(function(event){
     event.preventDefault();
     var self = $(this);
-    data={}
+    var button = self.children('button');
+    var span = self.siblings('span.like-count');
+    var n = parseInt(span.text());
+    var string = button.attr('class');
+    var sub = 'mdl-button--accent';
+    if (string.indexOf(sub) != -1) {
+      span.text(n-1);
+    }else{
+      span.text(n+1)
+    }
+    button.toggleClass(sub)
     $.ajax({
       url:self.attr("href"),
       type:'get',
-      data:data,
-      success: function(data){
-        self.siblings('p.like-count').text(data.like_count+" likes")
-        self.children('button').toggleClass('mdl-button--accent')
-        console.log(data.like_count)
-      },
       failure: function(response, error){
-      	console.log(error)
-       self.click();
+        console.log(error);
+        window.location=self.attr("href")
       }
     })
   })
@@ -89,8 +101,14 @@
 
   $(".post-delete-btn").click(function(event){
     event.preventDefault();
-    if (confirm("Are you sure?")) {
+    var dialog = document.querySelector('dialog.mdl-dialog-post-delete');
+    dialog.showModal();
+    dialog.querySelector('.agree').addEventListener('click', function() {
       window.location=$(".post-delete-btn").attr("href")
-    }
+    });
+    dialog.querySelector('.close').addEventListener('click', function() {
+      dialog.close();
+    });
   })
+
 </script>

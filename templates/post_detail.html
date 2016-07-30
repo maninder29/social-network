@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% load post_tags %}
-{% load crispy_forms_tags %}
 
 {% block content %}
 <div class="mdl-grid">
@@ -24,8 +23,8 @@
 			</div>
 			<div class="mdl-card__actions">
 				<p class="comment-count" style="float:right; padding-right:20px">{{ comments.count }} comments</p>
-				<p class="like-count" style="padding-left:20px">{{ instance.like_count }} likes</p><hr>
-
+				<span class="like-count" style="padding-left:20px" id="tt5{{instance.id}}">{{ instance.like_count }}</span> likes<hr>
+				<span class="mdl-tooltip mdl-tooltip--top mdl-tooltip--large" for="tt5{{instance.id}}">{% liked_by_users instance %}</span>
 				<a href="{% url 'posts:like' id=instance.id %}" class="like-btn"><button class="mdl-button mdl-js-button mdl-js-ripple-effect {% if user|has_liked:instance %}mdl-button--accent{% endif %}"><i class="material-icons">thumb_up</i> like</button></a>
 
 				<a href="#comments" class="mdl-button mdl-js-button mdl-js-ripple-effect comment-button">{{ comments.count }} Comment{% if comments.count > 1 %}s{% endif %}</a>
@@ -69,14 +68,14 @@
 			</form><br>
 			<ul class="demo-list-three mdl-list">
 				{% for comment in comments %}
-					<div class="mdl-grid">
-						<div class="mdl-cell mdl-cell--12-col-desktop">
-							<li class="mdl-list__item mdl-list__item--three-line">
+					<div class="mdl-grid" style="padding:0px">
+						<div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--8-col-tablet mdl-cell--4-col-phone" style="margin:0px">
+							<li class="mdl-list__item mdl-list__item--three-line" style="padding:0px">
 						    <span class="mdl-list__item-primary-content">
 						      <!-- <i class="material-icons mdl-list__item-avatar">person</i> -->
 						      <img src="{{comment.user.userprofile.profile_pic.url}}" class=" mdl-list__item-avatar">
 						      <span>{{comment.user}}</span>
-						      <span class="mdl-list__item-text-body">
+						      <span class="mdl-list__item-text-body" style="overflow: auto;">
 						        {{comment.content}}
 						      </span>
 						    </span>
@@ -86,15 +85,15 @@
 						  </li>
 						</div>
 					</div>
-					<div class="mdl-grid comment-reply" style="display:none">
+					<div class="mdl-grid comment-reply" style="display:none; padding:0px">
 						<div class="mdl-cell mdl-cell--11-col-desktop mdl-cell--1-offset-desktop">
-							<ul class="demo-list-three mdl-list">
+							<ul class="demo-list-three mdl-list" style="padding:0px">
 								{% for child in comment.children %}
-									<li class="mdl-list__item mdl-list__item--three-line">
+									<li class="mdl-list__item mdl-list__item--three-line" style="padding:0px">
 									  <span class="mdl-list__item-primary-content">
 									    <img src="{{comment.user.userprofile.profile_pic.url}}" class=" mdl-list__item-avatar">
 									    <span>{{child.user}}</span>
-									    <span class="mdl-list__item-text-body">
+									    <span class="mdl-list__item-text-body" style="overflow: auto;">
 									      {{child.content}}
 									    </span>
 									  </span>
