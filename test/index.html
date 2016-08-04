@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vesta</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/materialize.min.css">
+  <link rel="stylesheet" href="css/material.min.css">
+  <style type="text/css">
+    @font-face {
+      font-family: 'Material Icons';
+      font-style: normal;
+      font-weight: 400;
+      src: local('Material Icons'), local('MaterialIcons-Regular'), 
+      url("css/google-mateiral-icons.woff2") format('woff2');
+    }
+    .material-icons {
+      font-family: 'Material Icons';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+    .tabs .tab a.active {
+      background-color: red;
+      border-radius: 15px 15px 0px 0px;
+      color: white;
+      outline: 0;
+    }
+  </style>
+</head>
+<body>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
+  <header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+      <!-- Title -->
+      <span class="mdl-layout-title" style="font-family: sans-serif;">VESTA</span>
+      <div class="mdl-layout-spacer"></div>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable 
+        mdl-textfield--floating-label mdl-textfield--align-right" style="width:200px">
+        <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp" style="position:absolute;top: 35px; ">
+          <i class="material-icons">search</i>
+        </label>
+        <div class="mdl-textfield__expandable-holder">
+          <form method="get" action="#">
+            <input class="mdl-textfield__input" type="text" name="q" id="fixed-header-drawer-exp">
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Tabs -->
+    <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+      <a href="#medical-history" class="mdl-layout__tab"><i class="material-icons">account_circle</i> medical history</a>
+      <a href="#profile" class="mdl-layout__tab is-active"><i class="material-icons">account_circle</i> profile</a>
+      <a href="#future-appointments" class="mdl-layout__tab"><i class="material-icons">account_circle</i> future appointments</a>
+    </div>
+  </header>
+
+  <div class="mdl-layout__drawer">
+    <span class="mdl-layout-title">VESTA</span>
+    <div class="mdl-navigation">
+      <a class="mdl-navigation__link" href="">psychiatrist</a>
+      <a class="mdl-navigation__link" href="">gynecologist</a>
+      <a class="mdl-navigation__link" href="">Link</a>
+      <a class="mdl-navigation__link" href="">Link</a>
+    </div>
+  </div>
+
+  <main class="mdl-layout__content" style="padding-bottom: 300px"> <!-- style="background-image: url('img/13.jpg'); background-repeat:no-repeat; background-size:cover; "> -->
+    <section class="mdl-layout__tab-panel" id="medical-history">
+      <div class="page-content">
+        <div class="mdl-grid">
+          <div class="mdl-cell mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
+            <div class="mdl-card mdl-shadow--2dp" style="width: 100%; ">
+              <div class="mdl-card__title mdl-card--border">
+                 <h2 class="mdl-card__title-text">Disease</h2>
+              </div>
+              <div class="mdl-card__supporting-text mdl-card--border">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </div>
+              <div class="mdl-card__actions mdl-card--border">
+                 <a href="#" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">View</a>
+              </div>
+            </div><br>
+            <div class="mdl-card mdl-shadow--2dp" style="width: 100%; ">
+              <div class="mdl-card__title mdl-card--border">
+                 <h2 class="mdl-card__title-text">Disease</h2>
+              </div>
+              <div class="mdl-card__supporting-text mdl-card--border">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </div>
+              <div class="mdl-card__actions mdl-card--border">
+                 <a href="#" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">View</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mdl-layout__tab-panel is-active" id="profile">
+      <div class="page-content">
+        <div class="mdl-grid">
+          <div class="mdl-cell" style="margin:auto;text-align: center; ">
+            <img src="img/gohan.jpg" width="250" height="250" class="materialboxed" 
+            style="border-radius: 1000px; margin-left: auto; margin-right: auto">
+            <h3>Nishant Rana</h3>
+          </div>
+        </div>
+        <div class="mdl-grid">
+          <div class="mdl-cell mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
+            <ul class="tabs">
+              <li class="tab col s4"><a href="#vitals" onclick="Materialize.showStaggeredList('#vitals-list')">Vitals</a></li>
+              <li class="tab col s4"><a class="active" href="#current">Current disease</a></li>
+              <li class="tab col s4"><a href="#history">History</a></li>
+            </ul>
+          </div>
+
+          <div id="vitals" class="mdl-cell mdl-cell--6-col-desktop mdl-cell--3-offset-desktop" style="margin-top:50px; ">
+            <ul class="collapsible popout" data-collapsible="accordion" id="vitals-list">
+              <li>
+                <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+                <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+              </li>
+              <li>
+                <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
+                <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+              </li>
+              <li>
+                <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+                <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+              </li>
+            </ul>
+          </div>
+
+          <div id="current" class="mdl-cell mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
+            <div class="mdl-card mdl-shadow--2dp" style="width: 100%; ">
+              <div class="mdl-card__title mdl-card--border">
+                 <h2 class="mdl-card__title-text">Disease</h2>
+              </div>
+              <div class="mdl-card__supporting-text mdl-card--border">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </div>
+              <div class="mdl-card__actions mdl-card--border">
+                 <a href="#" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">View</a>
+              </div>
+            </div>
+          </div>
+
+          <div id="history" class="mdl-cell mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
+            <div class="mdl-card mdl-shadow--2dp" style="width: 100%; ">
+              <div class="mdl-card__title mdl-card--border">
+                 <h2 class="mdl-card__title-text">Disease</h2>
+              </div>
+              <div class="mdl-card__supporting-text mdl-card--border">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </div>
+              <div class="mdl-card__actions mdl-card--border">
+                 <a href="#" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">View</a>
+              </div>
+            </div><br>
+            <div class="mdl-card mdl-shadow--2dp" style="width: 100%; ">
+              <div class="mdl-card__title mdl-card--border">
+                 <h2 class="mdl-card__title-text">Disease</h2>
+              </div>
+              <div class="mdl-card__supporting-text mdl-card--border">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </div>
+              <div class="mdl-card__actions mdl-card--border">
+                 <a href="#" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">View</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mdl-layout__tab-panel" id="future-appointments">
+      <div class="page-content">
+        <div class="mdl-grid">
+          <div class="mdl-cell mdl-cell--8-col-desktop mdl-cell--2-offset-desktop">
+            <div class="mdl-card mdl-shadow--2dp" style="width: 100%; ">
+              <div class="mdl-card__title mdl-card--border">
+                 <h2 class="mdl-card__title-text">Disease</h2>
+              </div>
+              <div class="mdl-card__supporting-text mdl-card--border">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </div>
+              <div class="mdl-card__actions mdl-card--border">
+                 <a href="#" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">View</a>
+              </div>
+            </div><br>
+            <div class="mdl-card mdl-shadow--2dp" style="width: 100%; ">
+              <div class="mdl-card__title mdl-card--border">
+                 <h2 class="mdl-card__title-text">Disease</h2>
+              </div>
+              <div class="mdl-card__supporting-text mdl-card--border">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </div>
+              <div class="mdl-card__actions mdl-card--border">
+                 <a href="#" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">View</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="fixed-action-btn vertical" style="bottom: 50px; right: 70px;">
+  <a class="btn-floating btn-large" style="background-color: red ">
+    <i class="large material-icons">add</i>
+  </a>
+  <ul>
+    <li id="a"><a class="btn-floating red modal-trigger" href="#modal1"><i class="material-icons">insert_chart</i></a></li>
+    <li id="b"><a class="btn-floating yellow modal-trigger" href="#modal2"><i class="material-icons">format_quote</i></a></li>
+    <li id="c"><a class="btn-floating green modal-trigger" href="#modal3"><i class="material-icons">local_hospital</i></a></li>
+    <li id="d"><a class="btn-floating blue modal-trigger" href="#modal4"><i class="material-icons">attach_file</i></a></li>
+  </ul>
+</div>
+
+<div id="modal1" class="modal">
+  <div class="modal-content">
+    <h4>search doctors</h4><br><br>
+    <form class="col s3" method="get" action="#">
+      <div class="input-field">
+        <input id="search" type="search" name="doctor" required>
+        <label for="search"><i class="material-icons">search</i></label>
+        <i class="material-icons">close</i>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--left" for="a">search doctors</div>
+
+<div id="modal2" class="modal">
+  <div class="modal-content">
+    <h4>search clinics</h4><br><br>
+    <form class="col s3" method="get" action="#">
+      <div class="input-field">
+        <input id="search" type="search" name="clinic" required>
+        <label for="search"><i class="material-icons">search</i></label>
+        <i class="material-icons">close</i>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--left" for="b">search clinics</div>
+
+<div id="modal3" class="modal">
+  <div class="modal-content">
+    <h4>search diagnostic centres</h4><br><br>
+    <form class="col s3" method="get" action="#">
+      <div class="input-field">
+        <input id="search" type="search" name="diagnostic" required>
+        <label for="search"><i class="material-icons">search</i></label>
+        <i class="material-icons">close</i>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--left" for="c">search diagnostic centres</div>
+
+<div id="modal4" class="modal">
+  <div class="modal-content">
+    <h4>search pharmacies</h4><br><br>
+    <form class="col s3" method="get" action="#">
+      <div class="input-field">
+        <input id="search" type="search" name="pharmacy" required>
+        <label for="search"><i class="material-icons">search</i></label>
+        <i class="material-icons">close</i>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="mdl-tooltip mdl-tooltip--large mdl-tooltip--left" for="d">search pharmacies</div>
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/material.min.js"></script>
+  <script src="js/materialize.min.js"></script>
+  <script type="text/javascript">
+    $(".mdl-card").hover(function () {
+      $(this).toggleClass("mdl-shadow--8dp");
+    });
+    $(document).ready(function(){
+      $('.modal-trigger').leanModal({
+        dismissible: true,
+      });
+    });
+  </script>
+</body>
+</html>
