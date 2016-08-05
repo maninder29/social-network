@@ -14,7 +14,8 @@
 
 	<!-- user detail div -->
 	<div class="mdl-cell mdl-cell--4-col-desktop">
-		<img src="{{current_user.userprofile.profile_pic.url}}" class="img-responsive">
+		<img src="{{current_user.userprofile.profile_pic.url}}" class="img-responsive" 
+			style="position: relative;left: 64px; height:300px; width: 300px ">
 		<h2 style="text-align:center"><u>{{current_user.get_full_name.capitalize}}</u></h2>
 		<div style="color:blue">
 			<p>Phone number : {{current_user.userprofile.phone}} </p>

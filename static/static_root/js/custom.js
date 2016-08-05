@@ -32,7 +32,7 @@ $(".like-btn").click(function(event){
   })
 })
 
-$(".add-friend-btn").click(function(evnet){
+$(".add-friend-btn").click(function(event){
   event.preventDefault();
   ctx={}
   $.ajax({
@@ -59,7 +59,7 @@ $(".add-friend-btn").click(function(evnet){
   })
 })
 
-$(".follow-btn").click(function(evnet){
+$(".follow-btn").click(function(event){
   event.preventDefault();
   ctx={}
   $.ajax({

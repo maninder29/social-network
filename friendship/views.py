@@ -34,6 +34,7 @@ def friendship_add_friend(request, to_username, template_name='user_detail.html'
             Friend.objects.add_friend(from_user, to_user)
         except Exception as e:
             print e
+            print "friendship_add_friend in views.py"
             ctx['error'] = True
         return JsonResponse(ctx)
     return redirect("/")

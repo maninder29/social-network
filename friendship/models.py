@@ -130,9 +130,9 @@ class FriendshipRequest(models.Model):
     def reject(self):
         """ reject this friendship request """
         self.rejected = timezone.now()
-        self.save()
         friendship_request_rejected.send(sender=self)
         bust_cache('requests', self.to_user.pk)
+        self.delete()
 
     def cancel(self):
         """ cancel this friendship request """
@@ -318,7 +318,6 @@ class FriendshipManager(models.Manager):
             qs.delete()
             bust_cache('friends', to_user.pk)
             bust_cache('friends', from_user.pk)
-            print "!!! success !!!"
 
         except Exception as e:
             e=str(e)
